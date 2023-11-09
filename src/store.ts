@@ -1,7 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import categoriesReducer from 'features/categories/reducer';
+import featuredPlaylistsReducer from 'features/featuredPlaylists/reducer';
+import newReleasesReducer from 'features/newReleases/reducer';
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    categories: categoriesReducer,
+    featuredPlaylists: featuredPlaylistsReducer,
+    newReleases: newReleasesReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
