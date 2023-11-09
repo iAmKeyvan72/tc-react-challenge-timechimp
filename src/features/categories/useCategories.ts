@@ -1,12 +1,14 @@
 import endpoints from 'constants/endpoints';
-import useAuth from 'features/auth/useAuth';
+import { useAppDispatch, useAppSelector } from 'hooks/useStore';
 import { useState } from 'react';
+import { setCategories } from './reducer';
 
-const useCategories = (code: string) => {
+const useCategories = (token: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const categories = useAppSelector((state) => state.categories);
 
-  const accessToken = useAuth(code);
+  const dispatch = useAppDispatch();
 
   const fetchCategories = async () => {
     try {
@@ -15,13 +17,14 @@ const useCategories = (code: string) => {
 
       const response = await fetch(endpoints.CATEGORIES, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        dispatch(setCategories(data.categories.items));
+        return data.categories.items;
       } else {
         throw new Error('Something went wrong');
       }
@@ -37,6 +40,7 @@ const useCategories = (code: string) => {
     loading,
     error,
     fetchCategories,
+    categories,
   };
 };
 

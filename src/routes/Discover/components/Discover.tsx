@@ -2,26 +2,47 @@ import React, { useState, useEffect } from 'react';
 import DiscoverBlock from './DiscoverBlock/components/DiscoverBlock';
 import '../styles/_discover.scss';
 import useCategories from 'features/categories/useCategories';
+import useNewReleases from 'features/newReleases/useNewReleases';
+import useFeaturedPlaylists from 'features/featuredPlaylists/useFeaturedPlaylists';
 
-const Discover: React.FC = () => {
+type Props = {
+  token: string;
+};
+
+const Discover: React.FC<Props> = ({ token }) => {
   const [newReleases, setNewReleases] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  // const {
-  //   loading: loadCategories,
-  //   error: errorCategories,
-  //   fetchCategories,
-  // } = useCategories(code);
+  const {
+    loading: loadNewReleases,
+    error: errorNewReleases,
+    newReleases: newReleasesData,
+    fetchNewReleases,
+  } = useNewReleases(token);
 
-  // // Simulate data fetching and setting the state
-  // useEffect(() => {
-  //   // Fetch and set data for newReleases, playlists, and categories here
-  //   // Example: fetchNewReleases().then(data => setNewReleases(data));
-  //   // Example: fetchPlaylists().then(data => setPlaylists(data));
-  //   fetchCategories();
-  //   // .then(data => setCategories(data));
-  // }, []);
+  const {
+    loading: loadPlaylists,
+    error: errorPlaylists,
+    featuredPlaylists: featuredPlaylistsData,
+    fetchFeaturedPlaylists,
+  } = useFeaturedPlaylists(token);
+
+  const {
+    loading: loadCategories,
+    error: errorCategories,
+    categories: categoriesData,
+    fetchCategories,
+  } = useCategories(token);
+
+  useEffect(() => {
+    if (token) {
+      // Fetch and set data for newReleases, playlists, and categories here
+      fetchNewReleases().then((data) => setNewReleases(data));
+      fetchFeaturedPlaylists().then((data) => setPlaylists(data));
+      fetchCategories().then((data) => setCategories(data));
+    }
+  }, [token]);
 
   return (
     <div className="discover">
