@@ -40,7 +40,7 @@ const Discover: React.FC<Props> = ({ token }) => {
       fetchFeaturedPlaylists().then((data) => setPlaylists(data));
       fetchCategories().then((data) => setCategories(data));
     }
-  }, [token]);
+  }, [token, fetchCategories]);
 
   return (
     <div className="discover">

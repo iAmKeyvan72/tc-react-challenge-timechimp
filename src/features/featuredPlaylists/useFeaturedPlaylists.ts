@@ -1,11 +1,11 @@
 import endpoints from 'constants/endpoints';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const useFeaturedPlaylists = (token: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchFeaturedPlaylists = async () => {
+  const fetchFeaturedPlaylists = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -28,7 +28,7 @@ const useFeaturedPlaylists = (token: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   return {
     loading,

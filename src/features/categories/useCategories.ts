@@ -1,11 +1,11 @@
 import endpoints from 'constants/endpoints';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const useCategories = (token: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -28,7 +28,7 @@ const useCategories = (token: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   return {
     loading,
