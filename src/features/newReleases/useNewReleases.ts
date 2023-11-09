@@ -1,14 +1,9 @@
 import endpoints from 'constants/endpoints';
-import { useAppDispatch, useAppSelector } from 'hooks/useStore';
 import { useState } from 'react';
-import { setNewReleases } from './reducer';
 
 const useNewReleases = (token: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const newReleases = useAppSelector((state) => state.newReleases);
-
-  const dispatch = useAppDispatch();
 
   const fetchNewReleases = async () => {
     try {
@@ -23,7 +18,6 @@ const useNewReleases = (token: string) => {
 
       if (response.ok) {
         const data = await response.json();
-        dispatch(setNewReleases(data.albums.items));
         return data.albums.items;
       } else {
         throw new Error('Something went wrong');
@@ -40,7 +34,6 @@ const useNewReleases = (token: string) => {
     loading,
     error,
     fetchNewReleases,
-    newReleases,
   };
 };
 

@@ -1,20 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 
 import Routes from './routes';
 import CoreLayout from './common/layouts/CoreLayout';
 import './styles/_main.scss';
-import { store } from 'store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <CoreLayout>
-        <Routes />
-      </CoreLayout>
-    </Provider>
+    <CoreLayout>
+      <Routes />
+    </CoreLayout>
   </React.StrictMode>,
   document.getElementById('root')
 );
