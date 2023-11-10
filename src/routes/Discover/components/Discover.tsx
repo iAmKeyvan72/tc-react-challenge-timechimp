@@ -6,39 +6,42 @@ import '../styles/_discover.scss';
 import useCategories from 'features/categories/useCategories';
 import useNewReleases from 'features/newReleases/useNewReleases';
 import useFeaturedPlaylists from 'features/featuredPlaylists/useFeaturedPlaylists';
+import { Album } from 'features/newReleases/types';
+import { Playlist } from 'features/featuredPlaylists/types';
+import { Category } from 'features/categories/types';
 
 type Props = {
   token: string;
 };
 
 const Discover: React.FC<Props> = ({ token }) => {
-  const [newReleases, setNewReleases] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [newReleases, setNewReleases] = useState<Album[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const {
     loading: loadNewReleases,
     error: errorNewReleases,
-    fetchNewReleases,
+    fetchData: fetchNewReleases,
   } = useNewReleases(token);
 
   const {
     loading: loadPlaylists,
     error: errorPlaylists,
-    fetchFeaturedPlaylists,
+    fetchData: fetchFeaturedPlaylists,
   } = useFeaturedPlaylists(token);
 
   const {
     loading: loadCategories,
     error: errorCategories,
-    fetchCategories,
+    fetchData: fetchCategories,
   } = useCategories(token);
 
   useEffect(() => {
     if (token) {
-      fetchNewReleases().then((data) => setNewReleases(data));
-      fetchFeaturedPlaylists().then((data) => setPlaylists(data));
-      fetchCategories().then((data) => setCategories(data));
+      fetchNewReleases().then((data) => setNewReleases(data!));
+      fetchFeaturedPlaylists().then((data) => setPlaylists(data!));
+      fetchCategories().then((data) => setCategories(data!));
     }
   }, [token, fetchCategories, fetchNewReleases, fetchFeaturedPlaylists]);
 
