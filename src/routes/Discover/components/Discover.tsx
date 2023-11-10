@@ -39,9 +39,9 @@ const Discover: React.FC<Props> = ({ token }) => {
 
   useEffect(() => {
     if (token) {
-      fetchNewReleases().then((data) => setNewReleases(data!));
-      fetchFeaturedPlaylists().then((data) => setPlaylists(data!));
-      fetchCategories().then((data) => setCategories(data!));
+      fetchNewReleases().then((data) => data && setNewReleases(data));
+      fetchFeaturedPlaylists().then((data) => data && setPlaylists(data));
+      fetchCategories().then((data) => data && setCategories(data));
     }
   }, [token, fetchCategories, fetchNewReleases, fetchFeaturedPlaylists]);
 
