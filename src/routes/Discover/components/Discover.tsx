@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import DiscoverBlock from './DiscoverBlock/components/DiscoverBlock';
 import '../styles/_discover.scss';
@@ -6,42 +6,38 @@ import '../styles/_discover.scss';
 import useCategories from 'features/categories/useCategories';
 import useNewReleases from 'features/newReleases/useNewReleases';
 import useFeaturedPlaylists from 'features/featuredPlaylists/useFeaturedPlaylists';
-import { Album } from 'features/newReleases/types';
-import { Playlist } from 'features/featuredPlaylists/types';
-import { Category } from 'features/categories/types';
 
 type Props = {
   token: string;
 };
 
 const Discover: React.FC<Props> = ({ token }) => {
-  const [newReleases, setNewReleases] = useState<Album[]>([]);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-
   const {
     loading: loadNewReleases,
     error: errorNewReleases,
     fetchData: fetchNewReleases,
+    data: newReleases,
   } = useNewReleases(token);
 
   const {
     loading: loadFeaturedPlaylists,
     error: errorPlaylists,
     fetchData: fetchFeaturedPlaylists,
+    data: featuredPlaylists,
   } = useFeaturedPlaylists(token);
 
   const {
     loading: loadCategories,
     error: errorCategories,
     fetchData: fetchCategories,
+    data: categories,
   } = useCategories(token);
 
   useEffect(() => {
     if (token) {
-      fetchNewReleases().then((data) => data && setNewReleases(data));
-      fetchFeaturedPlaylists().then((data) => data && setPlaylists(data));
-      fetchCategories().then((data) => data && setCategories(data));
+      fetchNewReleases();
+      fetchFeaturedPlaylists();
+      fetchCategories();
     }
   }, [token, fetchCategories, fetchNewReleases, fetchFeaturedPlaylists]);
 
@@ -57,7 +53,7 @@ const Discover: React.FC<Props> = ({ token }) => {
       <DiscoverBlock
         text="FEATURED PLAYLISTS"
         id="featured"
-        data={playlists}
+        data={featuredPlaylists}
         loading={loadFeaturedPlaylists}
         error={errorPlaylists?.message}
       />

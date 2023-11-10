@@ -8,7 +8,8 @@ type ApiError = {
 type ApiDataHook<T> = {
   loading: boolean;
   error: ApiError | null;
-  fetchData: () => Promise<T | undefined>;
+  fetchData: () => Promise<T[] | undefined>;
+  data: T[];
 };
 
 const useApiData = <T>(
@@ -18,6 +19,7 @@ const useApiData = <T>(
 ): ApiDataHook<T> => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
+  const [data, setData] = useState<T[]>([]);
 
   const fetchData = useCallback(async () => {
     try {
@@ -43,7 +45,8 @@ const useApiData = <T>(
       }
 
       const data = await response.json();
-      return data[dataKey].items as T;
+      setData(data[dataKey].items as T[]);
+      return data[dataKey].items as T[];
     } catch (error: any) {
       console.error(`Error fetching data from ${endpoint}:`, error.message);
       setError(error);
@@ -55,6 +58,7 @@ const useApiData = <T>(
   return {
     loading,
     error,
+    data,
     fetchData,
   };
 };
