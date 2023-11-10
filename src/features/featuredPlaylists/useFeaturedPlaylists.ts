@@ -1,5 +1,5 @@
 import endpoints from 'constants/endpoints';
-import useApiData from 'hooks/useApiData';
+import useApiData from 'hooks/useApiData/useApiData';
 import { Playlist } from './types';
 
 const useFeaturedPlaylists = (token: string) => {
