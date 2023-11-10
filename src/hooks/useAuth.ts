@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getTokenFromHash } from 'utilities/getTokenFromHash';
 
 const useAuth = () => {
   const [token, setToken] = useState<string | null>('');
@@ -8,14 +9,9 @@ const useAuth = () => {
     let token = window.localStorage.getItem('token');
 
     if (!token && hash) {
-      token = hash
-        .substring(1)
-        .split('&')
-        .find((el) => el.startsWith('access_token'))
-        ?.split('=')[1]!;
-
+      token = getTokenFromHash(hash);
       window.location.hash = '';
-      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('token', token || '');
     }
 
     setToken(token);

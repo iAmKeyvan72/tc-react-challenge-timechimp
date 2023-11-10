@@ -1,4 +1,4 @@
-export const spotifyBrowseBaseUrl = 'https://api.spotify.com/v1/browse';
+const spotifyBrowseBaseUrl = 'https://api.spotify.com/v1/browse';
 const endpoints = {
   AUTH: `https://accounts.spotify.com/authorize`,
   CATEGORIES: `${spotifyBrowseBaseUrl}/categories`,
