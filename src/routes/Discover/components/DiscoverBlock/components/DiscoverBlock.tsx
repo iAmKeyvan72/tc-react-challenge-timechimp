@@ -6,15 +6,25 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import DiscoverItem from './DiscoverItem';
 import '../styles/_discover-block.scss';
+import DiscoverItemSkeleton from './DiscoverItemSkeleton';
 
 type Props = {
   text: string;
   id: string;
   data: { [key: string]: any }[];
   imagesKey?: string;
+  loading: boolean;
+  error?: string;
 };
 
-const DiscoverBlock: FC<Props> = ({ text, id, data, imagesKey = 'images' }) => {
+const DiscoverBlock: FC<Props> = ({
+  text,
+  id,
+  data,
+  imagesKey = 'images',
+  loading = false,
+  error,
+}) => {
   return (
     <div className="discover-block">
       <div className="discover-block__header">
@@ -33,11 +43,23 @@ const DiscoverBlock: FC<Props> = ({ text, id, data, imagesKey = 'images' }) => {
           </div>
         ) : null}
       </div>
-      <div className="discover-block__row" id={id}>
-        {data.map(({ [imagesKey]: images, name }) => (
-          <DiscoverItem key={name} images={images} name={name} />
-        ))}
-      </div>
+      {error ? (
+        <div className="discover-block__error">
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="discover-block__row" id={id}>
+          {data.map(({ [imagesKey]: images, name }) => (
+            <React.Fragment key={name}>
+              {loading ? (
+                <DiscoverItemSkeleton />
+              ) : (
+                <DiscoverItem images={images} name={name} />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -26,7 +26,7 @@ const Discover: React.FC<Props> = ({ token }) => {
   } = useNewReleases(token);
 
   const {
-    loading: loadPlaylists,
+    loading: loadFeaturedPlaylists,
     error: errorPlaylists,
     fetchData: fetchFeaturedPlaylists,
   } = useFeaturedPlaylists(token);
@@ -51,13 +51,23 @@ const Discover: React.FC<Props> = ({ token }) => {
         text="RELEASED THIS WEEK"
         id="released"
         data={newReleases}
+        loading={loadNewReleases}
+        error={errorNewReleases?.message}
       />
-      <DiscoverBlock text="FEATURED PLAYLISTS" id="featured" data={playlists} />
+      <DiscoverBlock
+        text="FEATURED PLAYLISTS"
+        id="featured"
+        data={playlists}
+        loading={loadFeaturedPlaylists}
+        error={errorPlaylists?.message}
+      />
       <DiscoverBlock
         text="BROWSE"
         id="browse"
         data={categories}
         imagesKey="icons"
+        loading={loadCategories}
+        error={errorCategories?.message}
       />
     </div>
   );
