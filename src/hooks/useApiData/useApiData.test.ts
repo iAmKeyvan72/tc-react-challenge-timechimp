@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { renderHook } from '@testing-library/react-hooks';
+
 import useApiData from './useApiData';
 
 const mockCategoriesResponse = {
