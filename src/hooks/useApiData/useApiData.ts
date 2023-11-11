@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type ApiError = {
   status: number;
@@ -7,8 +7,7 @@ type ApiError = {
 
 type ApiDataHook<T> = {
   loading: boolean;
-  error: ApiError | null;
-  fetchData: () => Promise<T[] | undefined>;
+  error: string | null;
   data: T[];
 };
 
@@ -18,48 +17,51 @@ const useApiData = <T>(
   dataKey: 'categories' | 'albums' | 'playlists'
 ): ApiDataHook<T> => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<ApiError | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<T[]>([]);
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      const response = await fetch(endpoint, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const response = await fetch(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (!response.ok) {
-        const errorData: ApiError = await response.json();
-        const errorMessage = errorData?.message || 'Something went wrong';
+        if (!response.ok) {
+          const errorData: ApiError = await response.json();
+          const errorMessage = errorData?.message || 'Something went wrong';
 
-        if (response.status === 401) {
-          localStorage.removeItem('token');
-          window.location.replace('/');
+          if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.replace('/');
+          }
+
+          throw new Error(errorMessage);
         }
 
-        throw new Error(errorMessage);
-      }
+        const data = await response.json();
 
-      const data = await response.json();
-      setData(data[dataKey].items as T[]);
-      return data[dataKey].items as T[];
-    } catch (error: any) {
-      console.error(`Error fetching data from ${endpoint}:`, error.message);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [endpoint, token, dataKey]);
+        setData(data[dataKey].items as T[]);
+      } catch (error: any) {
+        console.error(`Error fetching data from ${endpoint}:`, error);
+        setError((error as ApiError).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [dataKey, endpoint, token]);
 
   return {
     loading,
     error,
     data,
-    fetchData,
   };
 };
 

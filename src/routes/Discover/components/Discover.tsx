@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import DiscoverBlock from './DiscoverBlock/components/DiscoverBlock';
 import '../styles/_discover.scss';
@@ -15,31 +15,20 @@ const Discover: React.FC<Props> = ({ token }) => {
   const {
     loading: loadNewReleases,
     error: errorNewReleases,
-    fetchData: fetchNewReleases,
     data: newReleases,
   } = useNewReleases(token);
 
   const {
     loading: loadFeaturedPlaylists,
     error: errorPlaylists,
-    fetchData: fetchFeaturedPlaylists,
     data: featuredPlaylists,
   } = useFeaturedPlaylists(token);
 
   const {
     loading: loadCategories,
     error: errorCategories,
-    fetchData: fetchCategories,
     data: categories,
   } = useCategories(token);
-
-  useEffect(() => {
-    if (token) {
-      fetchNewReleases();
-      fetchFeaturedPlaylists();
-      fetchCategories();
-    }
-  }, [token, fetchCategories, fetchNewReleases, fetchFeaturedPlaylists]);
 
   return (
     <div className="discover">
@@ -48,14 +37,14 @@ const Discover: React.FC<Props> = ({ token }) => {
         id="released"
         data={newReleases}
         loading={loadNewReleases}
-        error={errorNewReleases?.message}
+        error={errorNewReleases}
       />
       <DiscoverBlock
         text="FEATURED PLAYLISTS"
         id="featured"
         data={featuredPlaylists}
         loading={loadFeaturedPlaylists}
-        error={errorPlaylists?.message}
+        error={errorPlaylists}
       />
       <DiscoverBlock
         text="BROWSE"
@@ -63,7 +52,7 @@ const Discover: React.FC<Props> = ({ token }) => {
         data={categories}
         imagesKey="icons"
         loading={loadCategories}
-        error={errorCategories?.message}
+        error={errorCategories}
       />
     </div>
   );

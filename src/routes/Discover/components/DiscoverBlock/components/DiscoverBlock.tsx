@@ -14,7 +14,7 @@ type Props = {
   data: { [key: string]: any }[];
   imagesKey?: string;
   loading: boolean;
-  error?: string;
+  error: string | null;
 };
 
 const DiscoverBlock: FC<Props> = ({
