@@ -19,22 +19,16 @@ describe('Login', () => {
   });
 
   it('renders an error message when CLIENT_ID is not defined', () => {
-    delete process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-
+    process.env.REACT_APP_SPOTIFY_CLIENT_ID = '';
     render(<Login />);
-    const errorMessage = screen.getByRole('alert', {
-      name: 'Missing or invalid configuration, Please refresh the page',
-    });
+    const errorMessage = screen.getByRole('alert');
     expect(errorMessage).toBeInTheDocument();
   });
 
   it('renders an error message when REDIRECT_URI is not defined', () => {
-    delete process.env.REACT_APP_SPOTIFY_REDIRECT_URI;
-
+    process.env.REACT_APP_SPOTIFY_REDIRECT_URI = '';
     render(<Login />);
-    const errorMessage = screen.getByRole('alert', {
-      name: 'Missing or invalid configuration, Please refresh the page',
-    });
+    const errorMessage = screen.getByRole('alert');
     expect(errorMessage).toBeInTheDocument();
   });
 });

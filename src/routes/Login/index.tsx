@@ -4,13 +4,11 @@ import spotifyAuthConstants from 'constants/spotifyAuthConstants';
 
 import './styles/_login.scss';
 
-const {
-  REACT_APP_SPOTIFY_CLIENT_ID: CLIENT_ID,
-  REACT_APP_SPOTIFY_REDIRECT_URI: REDIRECT_URI,
-} = process.env;
-
 const Login = () => {
-  console.log(CLIENT_ID, REDIRECT_URI);
+  const {
+    REACT_APP_SPOTIFY_CLIENT_ID: CLIENT_ID,
+    REACT_APP_SPOTIFY_REDIRECT_URI: REDIRECT_URI,
+  } = process.env;
 
   if (!CLIENT_ID || !REDIRECT_URI) {
     return (

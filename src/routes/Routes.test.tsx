@@ -1,24 +1,25 @@
 import { render, screen } from '@testing-library/react';
-import useAuth from 'hooks/useAuth/useAuth';
 import Routes from './index';
-
-jest.mock('hooks/useAuth/useAuth');
+import { AuthContext } from 'contexts/AuthContext';
 
 describe('Routes', () => {
   it('renders Discover component when authenticated', () => {
-    (useAuth as jest.Mock).mockReturnValue('fake-token');
+    render(
+      <AuthContext.Provider value="token">
+        <Routes />
+      </AuthContext.Provider>
+    );
 
-    render(<Routes />);
-    const releasedThisWeekElement = screen.getByRole('heading', {
-      name: 'RELEASED THIS WEEK',
-    });
-    expect(releasedThisWeekElement).toBeInTheDocument();
+    const discoverElement = screen.getByRole('feed');
+    expect(discoverElement).toBeInTheDocument();
   });
 
   it('renders Login component when not authenticated', () => {
-    (useAuth as jest.Mock).mockReturnValue(null);
-
-    render(<Routes />);
+    render(
+      <AuthContext.Provider value={null}>
+        <Routes />
+      </AuthContext.Provider>
+    );
 
     const spotifyLoginButton = screen.getByRole('link', {
       name: 'Login with Spotify',

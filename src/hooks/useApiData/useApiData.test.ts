@@ -2,13 +2,28 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { renderHook } from '@testing-library/react-hooks';
 
-import mockCategoriesResponse from 'features/categories/mocks.json';
-
 import useApiData from './useApiData';
+
+const mockData = {
+  categories: {
+    items: [
+      {
+        id: '1',
+        name: 'Category 1',
+        icons: [{ url: 'https://example.com/image1.png' }],
+      },
+      {
+        id: '2',
+        name: 'Category 2',
+        icons: [{ url: 'https://example.com/image2.png' }],
+      },
+    ],
+  },
+};
 
 const server = setupServer(
   rest.get('/api/categories', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockCategoriesResponse));
+    return res(ctx.status(200), ctx.json(mockData));
   })
 );
 
@@ -19,7 +34,7 @@ afterAll(() => server.close());
 describe('useApiData', () => {
   it('should return loading state initially', async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useApiData('/api/categories', 'token', 'categories')
+      useApiData('/api/categories', 'categories')
     );
 
     expect(result.current.loading).toBe(true);
@@ -29,16 +44,14 @@ describe('useApiData', () => {
 
   it('should return data when request is successful', async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useApiData('/api/categories', 'token', 'categories')
+      useApiData('/api/categories', 'categories')
     );
 
     await waitForNextUpdate();
 
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBe(null);
-    expect(result.current.data).toEqual(
-      mockCategoriesResponse.categories.items
-    );
+    expect(result.current.data).toEqual(mockData.categories.items);
   });
 
   it('should return error when request fails', async () => {
@@ -55,7 +68,7 @@ describe('useApiData', () => {
     );
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useApiData('/api/categories', 'token', 'categories')
+      useApiData('/api/categories', 'categories')
     );
 
     await waitForNextUpdate();
@@ -79,7 +92,7 @@ describe('useApiData', () => {
     );
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useApiData('/api/categories', 'token', 'categories')
+      useApiData('/api/categories', 'categories')
     );
 
     await waitForNextUpdate();

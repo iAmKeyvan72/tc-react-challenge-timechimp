@@ -1,6 +1,6 @@
-export const getTokenFromHash = (hash: string) => {
+export const getTokenFromHash = () => {
   return (
-    hash
+    window.location.hash
       .substring(1)
       .split('&')
       .find((el) => el.startsWith('access_token'))
