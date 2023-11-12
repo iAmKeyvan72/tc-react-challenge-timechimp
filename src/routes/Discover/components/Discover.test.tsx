@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { getAllByRole, render, screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -69,14 +69,17 @@ describe('Discover component', () => {
 
     render(<Discover token="test-token" />);
 
-    const categories = await screen.findAllByTestId('category');
-    expect(categories).toHaveLength(20);
+    const categories = await screen.findByTestId('browse');
+    const categoriesList = getAllByRole(categories, 'listitem');
+    expect(categoriesList).toHaveLength(20);
 
-    const newReleases = await screen.findAllByTestId('new-release');
-    expect(newReleases).toHaveLength(20);
+    const newReleases = await screen.findByTestId('released');
+    const newReleasesList = getAllByRole(newReleases, 'listitem');
+    expect(newReleasesList).toHaveLength(20);
 
-    const featuredPlaylists = await screen.findAllByTestId('featured-playlist');
-    expect(featuredPlaylists).toHaveLength(20);
+    const featuredPlaylists = await screen.findByTestId('featured');
+    const featuredPlaylistsList = getAllByRole(featuredPlaylists, 'listitem');
+    expect(featuredPlaylistsList).toHaveLength(20);
   });
 
   it('displays an error message if any of the API calls fail', async () => {
@@ -100,8 +103,18 @@ describe('Discover component', () => {
 
     render(<Discover token="test-token" />);
 
-    const errorMessage = await screen.findByText('Failed to fetch data');
-    expect(errorMessage).toBeInTheDocument();
+    const categoriesError = await screen.findByText(
+      'Failed to fetch categories'
+    );
+    const newReleasesError = await screen.findByText(
+      'Failed to fetch new releases'
+    );
+    const featuredPlaylistsError = await screen.findByText(
+      'Failed to fetch featured playlists'
+    );
+    expect(categoriesError).toBeInTheDocument();
+    expect(newReleasesError).toBeInTheDocument();
+    expect(featuredPlaylistsError).toBeInTheDocument();
   });
 
   it('displays a loading spinner while the API calls are in progress', async () => {
@@ -125,7 +138,13 @@ describe('Discover component', () => {
 
     render(<Discover token="test-token" />);
 
-    const loadingSpinner = await screen.findByTestId('loading-spinner');
-    expect(loadingSpinner).toBeInTheDocument();
+    const loadingSkeletonImage = await screen.findByTestId(
+      'skeleton-item-image'
+    );
+    const loadingSkeletonTitle = await screen.findByTestId(
+      'skeleton-item-title'
+    );
+    expect(loadingSkeletonImage).toBeInTheDocument();
+    expect(loadingSkeletonTitle).toBeInTheDocument();
   });
 });

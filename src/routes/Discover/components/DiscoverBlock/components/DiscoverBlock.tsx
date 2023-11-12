@@ -47,17 +47,17 @@ const DiscoverBlock: FC<Props> = ({
       {error ? (
         <ErrorMessage error={error} />
       ) : (
-        <div className="discover-block__row" id={id}>
+        <ul className="discover-block__row" id={id} data-testid={id}>
           {data.map(({ [imagesKey]: images, name }) => (
             <React.Fragment key={name}>
-              {loading ? (
+              {true ? (
                 <DiscoverItemSkeleton />
               ) : (
                 <DiscoverItem images={images} name={name} />
               )}
             </React.Fragment>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
