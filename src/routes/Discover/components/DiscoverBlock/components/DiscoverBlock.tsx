@@ -7,6 +7,7 @@ import {
 import DiscoverItem from './DiscoverItem';
 import '../styles/_discover-block.scss';
 import DiscoverItemSkeleton from './DiscoverItemSkeleton';
+import ErrorMessage from 'common/components/ErrorMessage';
 
 type Props = {
   text: string;
@@ -44,9 +45,7 @@ const DiscoverBlock: FC<Props> = ({
         ) : null}
       </div>
       {error ? (
-        <div className="discover-block__error">
-          <p>{error}</p>
-        </div>
+        <ErrorMessage error={error} />
       ) : (
         <div className="discover-block__row" id={id}>
           {data.map(({ [imagesKey]: images, name }) => (
