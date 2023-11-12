@@ -13,7 +13,7 @@ export type Owner = {
   external_urls: {
     spotify: string;
   };
-  followers: {
+  followers?: {
     href: string | null;
     total: number;
   };

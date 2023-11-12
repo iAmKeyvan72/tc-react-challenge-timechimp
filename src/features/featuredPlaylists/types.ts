@@ -9,13 +9,13 @@ export type Playlist = {
   href: string;
   id: string;
   images: {
-    height: number;
+    height: number | null;
     url: string;
-    width: number;
+    width: number | null;
   }[];
   name: string;
   owner: Owner;
-  public: boolean;
+  public: boolean | null;
   snapshot_id: string;
   tracks: {
     href: string;

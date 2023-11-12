@@ -17,7 +17,7 @@ export type Album = {
   name: string;
   release_date: string;
   release_date_precision: 'year' | 'month' | 'day';
-  restrictions: {
+  restrictions?: {
     reason: string;
   };
   type: 'album';
