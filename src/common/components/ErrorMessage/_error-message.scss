@@ -1,0 +1,12 @@
+@import '../../../styles/vars';
+
+
+.error-message {
+    padding: 0 10px;
+    margin: 20px auto 50px ;
+    background-color: $error-bg;
+    color: $error-text;
+    border: 1px solid $error-border;
+    border-radius: 5px;
+    align-self: auto;
+  }

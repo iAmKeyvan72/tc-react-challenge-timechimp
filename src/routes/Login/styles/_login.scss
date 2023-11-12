@@ -1,0 +1,11 @@
+@import '../../../styles/vars';
+
+.spotify-button {
+    display: block;
+    width: fit-content;
+    background-color: $primary-blue;
+    color: #FFF;
+    border-radius: 50px;
+    text-decoration: none;
+    padding: 10px;
+}
