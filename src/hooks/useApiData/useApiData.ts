@@ -32,6 +32,9 @@ const useApiData = <T>(
           },
         });
 
+        console.log('***********************');
+        console.log('[useApiData] response: ', response);
+
         if (!response.ok) {
           const errorData: ApiError = await response.json();
           const errorMessage = errorData?.message || 'Something went wrong';

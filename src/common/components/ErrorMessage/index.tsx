@@ -9,7 +9,7 @@ type Props = {
 const ErrorMessage: FC<Props> = ({ error }) => {
   return (
     <div className="error-message">
-      <p>{error}</p>
+      <p role="alert">{error}</p>
     </div>
   );
 };

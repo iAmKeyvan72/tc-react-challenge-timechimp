@@ -10,6 +10,8 @@ const {
 } = process.env;
 
 const Login = () => {
+  console.log(CLIENT_ID, REDIRECT_URI);
+
   if (!CLIENT_ID || !REDIRECT_URI) {
     return (
       <ErrorMessage error="Missing or invalid configuration, Please refresh the page." />

@@ -2,16 +2,9 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { renderHook } from '@testing-library/react-hooks';
 
-import useApiData from './useApiData';
+import mockCategoriesResponse from 'features/categories/mocks.json';
 
-const mockCategoriesResponse = {
-  categories: {
-    items: [
-      { id: 1, name: 'Category 1', items: [] },
-      { id: 2, name: 'Category 2', items: [] },
-    ],
-  },
-};
+import useApiData from './useApiData';
 
 const server = setupServer(
   rest.get('/api/categories', (req, res, ctx) => {
